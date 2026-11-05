@@ -1,0 +1,33 @@
+# Root .gitignore for GitHub Repository Explainer
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+Backend/.env
+Frontend/.env
+
+# Python virtual environments & cache
+venv/
+.venv/
+Backend/venv/
+Backend/__pycache__/
+__pycache__/
+*.py[cod]
+
+# Node dependencies & build output
+node_modules/
+Frontend/node_modules/
+Frontend/dist/
+
+# SQLite Database
+*.db
+*.sqlite
+*.sqlite3
+Backend/analyses.db
+
+# OS & Logs
+.DS_Store
+Thumbs.db
+*.log
+
