@@ -9,26 +9,11 @@ Paste any public GitHub repository URL and get back a complete, grounded enginee
 
 ---
 
-## Live Implementation Demo
+## Implementation Demo Video
 
-### Animated Walkthrough (Auto-Plays in GitHub & IDE Preview)
-![Live Demo Walkthrough](./portfolio-demo/demo.gif)
+<video src="./portfolio-demo/github-repo-explainer-demo.webm" controls autoplay loop muted width="100%"></video>
 
-> **Full 1080p Portfolio Video (`.webm`)**: [portfolio-demo/github-repo-explainer-demo.webm](./portfolio-demo/github-repo-explainer-demo.webm)
-
-### Feature Screenshots
-
-#### 1. Architecture Overview & History Dashboard
-![Architecture Overview](./portfolio-demo/1-overview.png)
-
-#### 2. Interactive Folder-Grouped Mermaid.js Flowchart
-![Mermaid Architecture Flowchart](./portfolio-demo/2-mermaid-diagram.png)
-
-#### 3. Grounded Per-File Explanations (All Files Ranked by Importance)
-![Per-File Explanations](./portfolio-demo/3-file-explanations.png)
-
-#### 4. "Start Here" Contributor Onboarding Guide
-![Contributor Onboarding Guide](./portfolio-demo/4-onboarding-guide.png)
+- **Download / View 1080p Demo Video**: [portfolio-demo/github-repo-explainer-demo.webm](./portfolio-demo/github-repo-explainer-demo.webm)
 
 ---
 
@@ -81,10 +66,4 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 cd Frontend
 npm.cmd install
 npm.cmd run dev
-```
-
-### 3. Record / Refresh the Demo Video & Screenshots
-With both servers running, execute:
-```powershell
-.\Backend\venv\Scripts\python.exe record_demo.py
 ```
