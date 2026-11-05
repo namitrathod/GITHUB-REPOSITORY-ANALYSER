@@ -11,10 +11,10 @@ Paste any public GitHub repository URL and get back a complete, grounded enginee
 
 ## Live Implementation Demo
 
-### Video Walkthrough (Preview Mode & Portfolio)
-<video src="./portfolio-demo/github-repo-explainer-demo.webm" controls autoplay loop muted width="100%"></video>
+### Animated Walkthrough (Auto-Plays in GitHub & IDE Preview)
+![Live Demo Walkthrough](./portfolio-demo/demo.gif)
 
-> **View Video File Directly**: [portfolio-demo/github-repo-explainer-demo.webm](./portfolio-demo/github-repo-explainer-demo.webm)
+> **Full 1080p Portfolio Video (`.webm`)**: [portfolio-demo/github-repo-explainer-demo.webm](./portfolio-demo/github-repo-explainer-demo.webm)
 
 ### Feature Screenshots
 
