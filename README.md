@@ -1,65 +1,90 @@
 # GitHub Repository Explainer (Local Hybrid LLM Edition)
 
-Paste any public GitHub repository URL and get back a plain-English overview:
-- **Architecture Summary**: Grounded strictly in the repository's real files.
-- **Interactive Mermaid.js Diagram**: Visualizes how the main modules and files connect.
-- **Per-File Explanations**: Purpose, key functions/classes/exports, and dependencies for each selected file.
-- **"Start Here" Onboarding Guide**: Recommended reading order, local setup steps, and where to make common changes.
+Paste any public GitHub repository URL and get back a complete, grounded engineering overview:
+- **Plain-English Architecture Summary**: Grounded strictly in the repository's real source code.
+- **Interactive Mermaid.js Architecture Diagram**: Grouped by folder (`Root`, `src/`, `scripts/`, `notebooks/`, etc.) with Left-to-Right / Top-Down layout toggle, zoom up to 400%, click-and-drag pan, and fullscreen mode.
+- **All-File Ranked Explanations**: Summarizes every project file in decreasing order of architectural importance (entrypoints → core subfolder code → notebooks → configs & docs).
+- **"Start Here" Contributor Onboarding Guide**: Recommended file reading order, local setup steps, and where to make common changes.
 - **SQLite History**: Instantaneous reload of previously analyzed repositories.
 
 ---
 
-## Hardware-Optimized Hybrid Local LLM Setup (`Ollama`)
+## Live Implementation Demo
 
-Instead of requiring a paid cloud `GOOGLE_API_KEY`, this project runs 100% locally using **Ollama** with a **Batched Complexity Router** tailored for a **4 GB VRAM GPU + 32 GB System RAM** machine:
+### Video Walkthrough (Preview Mode & Portfolio)
+<video src="./portfolio-demo/github-repo-explainer-demo.webm" controls autoplay loop muted width="100%"></video>
 
-1. **Fast GPU Model (`OLLAMA_FAST_MODEL=gemma3:4b`)**:
-   - Fits inside 4 GB GPU VRAM.
-   - Used for Step 1 (selecting key files from the repo tree) and Step 2a (summarizing standard/config/doc files at high speed).
-2. **Smart Hybrid Model (`OLLAMA_SMART_MODEL=gemma3:12b`)**:
-   - Uses GPU VRAM + 32 GB System RAM.
-   - Used for Step 2b (summarizing dense core source files) and Step 3 (reducing all per-file summaries into the final Architecture Overview, Mermaid.js diagram, and Onboarding Guide).
+> **View Video File Directly**: [portfolio-demo/github-repo-explainer-demo.webm](./portfolio-demo/github-repo-explainer-demo.webm)
+
+### Feature Screenshots
+
+#### 1. Architecture Overview & History Dashboard
+![Architecture Overview](./portfolio-demo/1-overview.png)
+
+#### 2. Interactive Folder-Grouped Mermaid.js Flowchart
+![Mermaid Architecture Flowchart](./portfolio-demo/2-mermaid-diagram.png)
+
+#### 3. Grounded Per-File Explanations (All Files Ranked by Importance)
+![Per-File Explanations](./portfolio-demo/3-file-explanations.png)
+
+#### 4. "Start Here" Contributor Onboarding Guide
+![Contributor Onboarding Guide](./portfolio-demo/4-onboarding-guide.png)
+
+---
+
+## System Architecture (Map-Reduce Pipeline)
+
+```mermaid
+flowchart LR
+  subgraph Input["1. Fetch & Rank"]
+    U["Public GitHub URL"] --> GH["GitHub REST Tree API"]
+    GH --> RANK["Importance Ranking\n(Entrypoints → Subfolders → Notebooks → Config)"]
+  end
+
+  subgraph MapStep["2. Parallel Fetch & Batched GPU Map"]
+    RANK --> DL["Parallel File Downloader\n(ThreadPoolExecutor + .ipynb Extractor)"]
+    DL --> MAP["Batched GPU Summarizer\n(Ollama qwen2.5-coder:3b in 4GB VRAM)"]
+  end
+
+  subgraph ReduceStep["3. Unified Reduce & Storage"]
+    MAP --> RED["Unified Reduce Synthesis\n(Architecture + Mermaid + Onboarding)"]
+    RED --> DB[("SQLite DB\n(analyses.db)")]
+    DB --> UI["React + Tailwind + Mermaid UI"]
+  end
+```
 
 ---
 
 ## Quick Start
 
-### 1. Install Prerequisites
-1. **Ollama**: Download from [ollama.com/download](https://ollama.com/download) and pull the models:
+### 1. Prerequisites
+1. **Ollama**: Download from [ollama.com/download](https://ollama.com/download) and pull the fast coding model:
    ```powershell
-   ollama pull gemma3:4b
-   ollama pull gemma3:12b
+   ollama pull qwen2.5-coder:3b
    ```
-2. **Python 3.10+**: Download from [python.org/downloads](https://www.python.org/downloads/) (check *"Add python.exe to PATH"*).
-3. **Node.js 18+**: Download from [nodejs.org](https://nodejs.org/).
+2. **Python 3.10+** and **Node.js 18+**.
 
-### 2. Run Stage 1 from the Command Line (CLI Pipeline)
-```powershell
-cd Backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-
-# Analyze any public GitHub repo directly in the terminal:
-python analyzer.py https://github.com/pallets/click --max-files 6
-```
-
-### 3. Run the Full-Stack App (Stage 2 Backend + Stage 3 Frontend)
-Simply double-click **`start-local.bat`** in the project root, or run both halves manually:
+### 2. Run the Full-Stack App
+Double-click **`start-local.bat`** in the project root, or start Backend and Frontend in two terminals:
 
 **Terminal 1 — FastAPI + SQLite Backend (`http://localhost:8000`)**:
 ```powershell
 cd Backend
-venv\Scripts\activate
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 **Terminal 2 — React + Tailwind Frontend (`http://localhost:5173`)**:
 ```powershell
 cd Frontend
-npm install
-npm run dev
+npm.cmd install
+npm.cmd run dev
 ```
 
-Open **http://localhost:5173** in your browser!
-
+### 3. Record / Refresh the Demo Video & Screenshots
+With both servers running, execute:
+```powershell
+.\Backend\venv\Scripts\python.exe record_demo.py
+```
